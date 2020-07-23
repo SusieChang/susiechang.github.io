@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+	<meta charset="UTF-8">
+	<title>Ajax</title>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"><script>loadCSS("/css/prism-tomorrow.css");</script><noscript><link rel="stylesheet" href="/css/prism-tomorrow.css"></noscript></head>
+<body>
+	<script type="application/javascript">
+		function createXHR (argument) {
+			if(typeof new XMLHttpRequest) {
+				return new XMLHttpRequest();
+			} else if (typeof ActiveXObject != "undefined") {
+				if(typeof arguments.callee.activeXString != "string") {
+					var versions = ["MSXML2.XMLHttp.6.0","MSXML2.XMLHttp.3.0","MSXML2.XMLHttp"]
+					, i
+					, len;
+					for(i = 0, len = versions.length; i < len; i++) {
+						try {
+							new ActiveXObject(versions[i]);
+							arguments.callee.activeXString = versions[i];
+							break;
+						} catch(e) {
+							console.log(e);
+						}
+					}
+				}
+				return new ActiveXObject(arguments.callee.activeXString);
+			} else {
+				return new Error("No XHR object available.");
+			}
+		}
+		window.onload = function (argument) {
+			xhr = createXHR();
+			xhr.onreadystatechange = function (argument) {
+				if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+					console.log(xhr.status);
+					console.log(xhr.getAllResponseHeaders());
+					console.log(typeof xhr.getAllResponseHeaders());
+				} else {
+					console.log('Request was not successful: ' + xhr.status);
+				}
+			}
+			xhr.open("get", "https://www.ephemeron.top/2018/08/26/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/", false);
+			xhr.send(null);
+		}
+	</script>
+</body>
+</html>

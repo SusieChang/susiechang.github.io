@@ -1,0 +1,1326 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Scrapy实战：爬取期刊遇到的坑与技术总结, 苏西的博客, Susie Blog, 博客, 个人网站, 互联网, Web, JavaScript, 前端, 设计">
+    <meta name="description" content="眇若天地一蜉蝣">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Scrapy实战：爬取期刊遇到的坑与技术总结 | Susie Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"><script>loadCSS("/css/prism-tomorrow.css");</script><noscript><link rel="stylesheet" href="/css/prism-tomorrow.css"></noscript></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Susie Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Susie Blog</div>
+        <div class="logo-desc">
+            
+            眇若天地一蜉蝣
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/img/post-bg-crawlpy.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Scrapy实战：爬取期刊遇到的坑与技术总结</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Scrapy/">
+                                <span class="chip bg-color">Scrapy</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/技术总结/" class="post-category">
+                                技术总结
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-12-03
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h4 id="参考博客及资料"><a href="#参考博客及资料" class="headerlink" title="参考博客及资料"></a>参考博客及资料</h4><ul>
+<li><a href="https://www.jianshu.com/p/2008701edffc" target="_blank" rel="noopener">【python2.7】爬取知网论文</a></li>
+<li><a href="http://www.qiuqingyu.cn/2017/04/27/python%E5%AE%9E%E7%8E%B0CNKI%E7%9F%A5%E7%BD%91%E7%88%AC%E8%99%AB/" target="_blank" rel="noopener"> python实现CNKI知网爬虫</a></li>
+<li>《Python3网络爬虫开发实战》崔庆才</li>
+</ul>
+<p>最近要写一个数据分析的项目，需要根据关键词爬取近十年期刊的主要信息，记录一下爬取过程中遇到的问题</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>我们要爬取学术论文详情页的主题，摘要等信息，主要步骤和其他网站的爬取大致相似：一是要根据关键词搜索到列表页；二是要从列表页请求得到详情页，从详情页取得我们所要的信息。</p>
+<ul>
+<li>入口页面：[<a href="http://kns.cnki.net/kns/brief/default_result.aspx]" target="_blank" rel="noopener">http://kns.cnki.net/kns/brief/default_result.aspx]</a></li>
+<li><p>搜索后，js动态渲染的请求列表页面：[<a href="http://kns.cnki.net/kns/brief/brief.aspx?...]" target="_blank" rel="noopener">http://kns.cnki.net/kns/brief/brief.aspx?...]</a><br>这里我们打开Developer Tools观察请求头和参数<br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d01a09826fd0?w=822&amp;h=515&amp;f=jpeg&amp;s=81790" alt=""><br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d0110542eda3?w=424&amp;h=257&amp;f=jpeg&amp;s=21768" alt=""><br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d01bf330ef4b?w=687&amp;h=418&amp;f=jpeg&amp;s=76510" alt=""><br>这里的关键信息： ① <strong>请求参数</strong>，我们观察到请求的关键词在字段KeyValue中(GET请求)； ② <strong>cookie</strong>和<strong>referer</strong>：如果没有在请求头部加入referer，我们将无法打开这个列表页，如果没有在头部中加入cookie，我们请求后得到的页面内容是不完整的！注意：iframe列表详情页只有从入口页面请求渲染后才能得到，这步请求不能省略！</p>
+</li>
+<li><p>从列表页的链接中解析得到详情页[<a href="http://kns.cnki.net/KCMS/detail/...]" target="_blank" rel="noopener">http://kns.cnki.net/KCMS/detail/...]</a><br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d09e0e75f394?w=1154&amp;h=477&amp;f=jpeg&amp;s=88213" alt=""><br>我们继续打开Developer Tools观察网页的HTML中跳转到详情页的链接<br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d0ed2a5f4ec5?w=655&amp;h=79&amp;f=jpeg&amp;s=19209" alt=""><br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d103f4b10017?w=1189&amp;h=169&amp;f=jpeg&amp;s=41839" alt=""><br>这里我们发现，链接的地址和我们最终得到的地址是不同的！是因为网页重定向了！</p>
+</li>
+<li><p>详情页，这里就只要解析网页即可，我们通过xpath可以很容易得到题目，作者，关键词，摘要等信息</p>
+</li>
+</ul>
+<h4 id="Scrapy实战"><a href="#Scrapy实战" class="headerlink" title="Scrapy实战"></a>Scrapy实战</h4><ol>
+<li><p>如何设置cookie：</p>
+<ul>
+<li>settings中设置<code>COOKIES_ENABLED=True</code>；</li>
+<li>http请求参考<a href="https://user-gold-cdn.xitu.io/2018/12/5/1677d13f930667ab" target="_blank" rel="noopener">Scrapy - how to manage cookies/sessions</a></li>
+<li>补充：cookiejar模块的主要作用是提供可存储的cookie对象，可以捕获cookie并在后续连接请求时重新发送，实现模拟登录功能。在scrapy中可以在请求是传入meta参数设置，根据不同会话记录对应的cookie:</li>
+</ul>
+</li>
+<li><p>如何请求入口页：(CJFQ代表期刊，可根据需求更改)</p>
+<pre class=" language-python"><code class="language-python">     data <span class="token operator">=</span> <span class="token punctuation">{</span>
+         <span class="token string">"txt_1_sel"</span><span class="token punctuation">:</span> <span class="token string">"SU$%=|"</span><span class="token punctuation">,</span>
+         <span class="token string">"txt_1_value1"</span><span class="token punctuation">:</span> self<span class="token punctuation">.</span>key_word<span class="token punctuation">,</span>
+         <span class="token string">"txt_1_special1"</span><span class="token punctuation">:</span> <span class="token string">"%"</span><span class="token punctuation">,</span>
+         <span class="token string">"PageName"</span><span class="token punctuation">:</span> <span class="token string">"ASP.brief_default_result_aspx"</span><span class="token punctuation">,</span>
+         <span class="token string">"ConfigFile"</span><span class="token punctuation">:</span> <span class="token string">"SCDBINDEX.xml"</span><span class="token punctuation">,</span>
+         <span class="token string">"dbPrefix"</span><span class="token punctuation">:</span> <span class="token string">"CJFQ"</span><span class="token punctuation">,</span>
+         <span class="token string">"db_opt"</span><span class="token punctuation">:</span> <span class="token string">"CJFQ"</span><span class="token punctuation">,</span>
+         <span class="token string">"singleDB"</span><span class="token punctuation">:</span> <span class="token string">"CJFQ"</span><span class="token punctuation">,</span>
+         <span class="token string">"db_codes"</span><span class="token punctuation">:</span> <span class="token string">"CJFQ"</span><span class="token punctuation">,</span>
+         <span class="token string">"his"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+         <span class="token string">"formDefaultResult"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+         <span class="token string">"ua"</span><span class="token punctuation">:</span> <span class="token string">"1.11"</span><span class="token punctuation">,</span>
+         <span class="token string">"__"</span><span class="token punctuation">:</span> time<span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">'%a %b %d %Y %H:%M:%S'</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">' GMT+0800 (中国标准时间)'</span>
+     <span class="token punctuation">}</span>
+     query_string <span class="token operator">=</span> parse<span class="token punctuation">.</span>urlencode<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+     <span class="token keyword">yield</span> Request<span class="token punctuation">(</span>url<span class="token operator">=</span>self<span class="token punctuation">.</span>home_url<span class="token operator">+</span>query_string<span class="token punctuation">,</span>
+                   headers<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">"Referer"</span><span class="token punctuation">:</span> self<span class="token punctuation">.</span>cur_referer<span class="token punctuation">}</span><span class="token punctuation">,</span>
+                   cookies<span class="token operator">=</span><span class="token punctuation">{</span>CookieJar<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+                   callback<span class="token operator">=</span>self<span class="token punctuation">.</span>parse<span class="token punctuation">)</span>
+</code></pre>
+</li>
+<li><p>如何请求列表页</p>
+<pre class=" language-python"><code class="language-python"> <span class="token keyword">def</span> <span class="token function">parse</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">:</span>
+     data <span class="token operator">=</span> <span class="token punctuation">{</span>
+         <span class="token string">'pagename'</span><span class="token punctuation">:</span> <span class="token string">'ASP.brief_default_result_aspx'</span><span class="token punctuation">,</span>
+         <span class="token string">'dbPrefix'</span><span class="token punctuation">:</span> <span class="token string">'CJFQ'</span><span class="token punctuation">,</span>
+         <span class="token string">'dbCatalog'</span><span class="token punctuation">:</span> <span class="token string">'中国学术期刊网络出版总库'</span><span class="token punctuation">,</span>
+         <span class="token string">'ConfigFile'</span><span class="token punctuation">:</span> <span class="token string">'SCDBINDEX.xml'</span><span class="token punctuation">,</span>
+         <span class="token string">'research'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+         <span class="token string">'t'</span><span class="token punctuation">:</span> int<span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+         <span class="token string">'keyValue'</span><span class="token punctuation">:</span> self<span class="token punctuation">.</span>key_word<span class="token punctuation">,</span>
+         <span class="token string">'S'</span><span class="token punctuation">:</span> <span class="token string">'1'</span><span class="token punctuation">,</span>
+         <span class="token string">'sorttype'</span><span class="token punctuation">:</span> <span class="token string">""</span>
+     <span class="token punctuation">}</span>
+     query_string <span class="token operator">=</span> parse<span class="token punctuation">.</span>urlencode<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+     url <span class="token operator">=</span> self<span class="token punctuation">.</span>list_url <span class="token operator">+</span> <span class="token string">'?'</span> <span class="token operator">+</span> query_string
+     <span class="token keyword">yield</span> Request<span class="token punctuation">(</span>url<span class="token operator">=</span>url<span class="token punctuation">,</span>
+                   headers<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">"Referer"</span><span class="token punctuation">:</span> self<span class="token punctuation">.</span>cur_referer<span class="token punctuation">}</span><span class="token punctuation">,</span>
+                   callback<span class="token operator">=</span>self<span class="token punctuation">.</span>parse_list_first<span class="token punctuation">)</span>
+</code></pre>
+</li>
+<li><p>如何解析列表页</p>
+<ul>
+<li>获得列表总页数：<pre class=" language-python"><code class="language-python">response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'//span[@class="countPageMark"]/text()'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract_first<span class="token punctuation">(</span><span class="token punctuation">)</span>
+max_page <span class="token operator">=</span> int<span class="token punctuation">(</span>page_link<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+<li>请求每个列表页<pre class=" language-python"><code class="language-python">              data <span class="token operator">=</span> <span class="token punctuation">{</span>
+              <span class="token string">"curpage"</span><span class="token punctuation">:</span> page_num<span class="token punctuation">,</span><span class="token comment" spellcheck="true">#循环更改</span>
+              <span class="token string">"RecordsPerPage"</span><span class="token punctuation">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+              <span class="token string">"QueryID"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+              <span class="token string">"ID"</span><span class="token punctuation">:</span><span class="token string">""</span><span class="token punctuation">,</span>
+              <span class="token string">"turnpage"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+              <span class="token string">"tpagemode"</span><span class="token punctuation">:</span> <span class="token string">"L"</span><span class="token punctuation">,</span>
+              <span class="token string">"dbPrefix"</span><span class="token punctuation">:</span> <span class="token string">"CJFQ"</span><span class="token punctuation">,</span>
+              <span class="token string">"Fields"</span><span class="token punctuation">:</span><span class="token string">""</span><span class="token punctuation">,</span>
+              <span class="token string">"DisplayMode"</span><span class="token punctuation">:</span> <span class="token string">"listmode"</span><span class="token punctuation">,</span>
+              <span class="token string">"PageName"</span><span class="token punctuation">:</span> <span class="token string">"ASP.brief_default_result_aspx"</span><span class="token punctuation">,</span>
+              <span class="token string">"isinEn"</span><span class="token punctuation">:</span> <span class="token number">1</span>
+          <span class="token punctuation">}</span>
+</code></pre>
+</li>
+<li>解析列表页（这里如果结果为空，请检查你是否正确设置了cookie）<pre class=" language-python"><code class="language-python">  tr_node <span class="token operator">=</span> response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">"//tr[@bgcolor='#f6f7fb']|//tr[@bgcolor='#ffffff']"</span><span class="token punctuation">)</span>
+  <span class="token keyword">for</span> item <span class="token keyword">in</span> tr_node<span class="token punctuation">:</span>
+      paper_link <span class="token operator">=</span> item<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">"td/a[@class='fz14']/@href"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract_first<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ul>
+</li>
+<li>如何解析详情页（只是一个示例，有很多种解析方法）<pre class=" language-python"><code class="language-python"> title <span class="token operator">=</span> response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'//*[@id="mainArea"]/div[@class="wxmain"]/div[@class="wxTitle"]/h2/text()'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ author <span class="token operator">=</span> response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'//*[@id="mainArea"]/div[@class="wxmain"]/div[@class="wxTitle"]/div[@class="author"]/span/a/text()'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ abstract <span class="token operator">=</span> response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'//*[@id="ChDivSummary"]/text()'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ keywords <span class="token operator">=</span> response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'//*[@id="catalog_KEYWORD"]/following-sibling::*/text()'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ol>
+<h4 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h4><p>即使解决了cookie和referer问题，想要批量爬取还是有一定难度，主要是一个超时问题无法访问，还可能出现验证码。我尝试使用CrawlProcess分批爬取还是不能解决，可能需要改进代码。</p>
+<p>欢迎fork<a href="https://github.com/SusieChang/ScrapySpider" target="_blank" rel="noopener">我的Github项目</a></p>
+<h4 id="2018-12-11-更新"><a href="#2018-12-11-更新" class="headerlink" title="2018.12.11 更新"></a>2018.12.11 更新</h4><p>使用电脑端爬取经常会遇到各种问题，比如超时访问获取不到网页；使用手机知网的接口限制少点，爬取会简单一点<a href="http://wap.cnki.net/touch/web" target="_blank" rel="noopener">http://wap.cnki.net/touch/web</a>，爬取的步骤是类似的。</p>
+<ol>
+<li>请求列表页<br>第一步还是要观察请求，打开DevTool<br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d32a111536ce?w=1328&amp;h=308&amp;f=jpeg&amp;s=78815" alt=""><br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d32b8ee97deb?w=367&amp;h=242&amp;f=jpeg&amp;s=23327" alt=""><br>可以简单的构造第一个请求(GET)：<pre class=" language-python"><code class="language-python"> <span class="token keyword">def</span> <span class="token function">start_requests</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+     data <span class="token operator">=</span> <span class="token punctuation">{</span>
+         <span class="token string">"kw"</span><span class="token punctuation">:</span> self<span class="token punctuation">.</span>key_word<span class="token punctuation">,</span>
+         <span class="token string">"field"</span><span class="token punctuation">:</span><span class="token number">5</span>
+     <span class="token punctuation">}</span>
+     url <span class="token operator">=</span> self<span class="token punctuation">.</span>list_url <span class="token operator">+</span> <span class="token string">'?'</span> <span class="token operator">+</span> parse<span class="token punctuation">.</span>urlencode<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+     <span class="token keyword">yield</span> Request<span class="token punctuation">(</span>url<span class="token operator">=</span>url<span class="token punctuation">,</span>
+                   headers<span class="token operator">=</span>self<span class="token punctuation">.</span>header<span class="token punctuation">,</span>
+                   meta<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">'cookiejar'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+                   callback<span class="token operator">=</span>self<span class="token punctuation">.</span>parse<span class="token punctuation">)</span>
+</code></pre>
+</li>
+<li>得到第一页列表页，筛选条件，得到请求的FormData<br>我们在网页进行筛选操作，可以看到类似结果：<br><img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d37f79bd54f3?w=691&amp;h=571&amp;f=jpeg&amp;s=99660" alt=""><br>FormData中，我们可以复制下来后，修改的几个变量来进行筛选：<ul>
+<li>pageindex：第几页列表页(1 ~ )</li>
+<li>fieldtype: 主题/篇名/全文/作者/关键词/单位/摘要/来源</li>
+<li>sorttype: 相关度/下载次数/被引频次/最新文献/历史文献</li>
+<li>articletype：文献类型</li>
+<li>starttime_sc: 开始年份</li>
+<li>endtime_sc: 结束年份<pre class=" language-python"><code class="language-python">  <span class="token keyword">def</span> <span class="token function">parse</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      self<span class="token punctuation">.</span>header<span class="token punctuation">[</span><span class="token string">'Referer'</span><span class="token punctuation">]</span> <span class="token operator">=</span> response<span class="token punctuation">.</span>request<span class="token punctuation">.</span>url
+      <span class="token keyword">yield</span> FormRequest<span class="token punctuation">(</span>url<span class="token operator">=</span>self<span class="token punctuation">.</span>list_url<span class="token punctuation">,</span>
+                        headers <span class="token operator">=</span> self<span class="token punctuation">.</span>header<span class="token punctuation">,</span>
+                        method <span class="token operator">=</span> <span class="token string">'POST'</span><span class="token punctuation">,</span>
+                        meta <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'cookiejar'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        formdata <span class="token operator">=</span> self<span class="token punctuation">.</span>myFormData<span class="token punctuation">,</span>
+                        callback <span class="token operator">=</span> self<span class="token punctuation">.</span>parse_list<span class="token punctuation">,</span>
+                        dont_filter <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>解析得到总列表页数,并构造请求</p>
+<pre class=" language-python"><code class="language-python"> <span class="token comment" spellcheck="true">#总页数</span>
+ paper_size <span class="token operator">=</span> int<span class="token punctuation">(</span>response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'//*[@id="totalcount"]/text()'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract_first<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+ <span class="token comment" spellcheck="true">#构造请求</span>
+ <span class="token keyword">for</span> page <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> paper_num<span class="token punctuation">)</span><span class="token punctuation">:</span>
+     self<span class="token punctuation">.</span>myFormData<span class="token punctuation">[</span><span class="token string">"pageindex"</span><span class="token punctuation">]</span> <span class="token operator">=</span> str<span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">,</span>
+     <span class="token keyword">yield</span> FormRequest<span class="token punctuation">(</span>url<span class="token operator">=</span>self<span class="token punctuation">.</span>list_url<span class="token punctuation">,</span>
+                        headers <span class="token operator">=</span> self<span class="token punctuation">.</span>header<span class="token punctuation">,</span>
+                       method <span class="token operator">=</span> <span class="token string">'POST'</span><span class="token punctuation">,</span>
+                       meta <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'cookiejar'</span><span class="token punctuation">:</span> page<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'page'</span><span class="token punctuation">:</span> page<span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">#更新会话</span>
+                       formdata <span class="token operator">=</span> self<span class="token punctuation">.</span>myFormData<span class="token punctuation">,</span>
+                       callback <span class="token operator">=</span> self<span class="token punctuation">.</span>parse_list_link<span class="token punctuation">,</span>
+                       dont_filter <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span>
+</code></pre>
+<p> 注意：我们观察请求过程，在网页中我们是通过点击更新的，我们观察LoadNextPage函数，可以看到请求更新数据也是通过提交表单的方式，因此我们可以构造POST请求数据。<br> <img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d44ed5367b8c?w=1062&amp;h=54&amp;f=jpeg&amp;s=20118" alt=""><br> <img src="https://user-gold-cdn.xitu.io/2018/12/5/1677d452acb8a46c?w=692&amp;h=481&amp;f=jpeg&amp;s=82903" alt=""></p>
+</li>
+<li><p>请求详情页</p>
+<pre class=" language-python"><code class="language-python"> items <span class="token operator">=</span> response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'//a[@class="c-company-top-link"]/@href'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract<span class="token punctuation">(</span><span class="token punctuation">)</span>
+     <span class="token comment" spellcheck="true">#可以将已爬取详情页数写入文件进行记录</span>
+     <span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'../record_page.txt'</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+         f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>str<span class="token punctuation">(</span>response<span class="token punctuation">.</span>meta<span class="token punctuation">[</span><span class="token string">'page'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
+     <span class="token keyword">for</span> item <span class="token keyword">in</span> items<span class="token punctuation">:</span>
+         <span class="token keyword">yield</span> Request<span class="token punctuation">(</span>url <span class="token operator">=</span> item<span class="token punctuation">,</span>
+                       meta<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">'cookiejar'</span><span class="token punctuation">:</span> response<span class="token punctuation">.</span>meta<span class="token punctuation">[</span><span class="token string">'cookiejar'</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">#对应会话标志</span>
+                       headers <span class="token operator">=</span> self<span class="token punctuation">.</span>header<span class="token punctuation">,</span>
+                       callback <span class="token operator">=</span> self<span class="token punctuation">.</span>parse_item<span class="token punctuation">)</span>
+</code></pre>
+</li>
+<li>解析详情页(示例)<pre class=" language-python"><code class="language-python"> baseinfo <span class="token operator">=</span> response<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'/html/body/div[@class="c-card__paper2"]'</span><span class="token punctuation">)</span>
+ keywords <span class="token operator">=</span> baseinfo<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><span class="token string">'//div[contains(text(),"关键词")]/following-sibling::*/a/text()'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>extract<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ol>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>为了提高爬取速度，防止ip被识别的可能，推荐阿布云进行IP代理，申请账号及HTTP动态隧道后，更改settings:</p>
+<pre class=" language-python"><code class="language-python">    DOWNLOAD_DELAY <span class="token operator">=</span> <span class="token number">0.2</span>
+    DOWNLOADER_MIDDLEWARES <span class="token operator">=</span> <span class="token punctuation">{</span>
+        <span class="token string">'myspider.middlewares.RandomUserAgentMiddleware'</span><span class="token punctuation">:</span> <span class="token number">401</span><span class="token punctuation">,</span>
+        <span class="token string">'myspider.middlewares.ABProxyMiddleware'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+    AB_PROXY_SERVER <span class="token operator">=</span> <span class="token punctuation">{</span>
+        <span class="token string">'proxyServer'</span><span class="token punctuation">:</span> <span class="token string">"http://http-dyn.abuyun.com:9020"</span><span class="token punctuation">,</span>
+        <span class="token string">'proxyUser'</span><span class="token punctuation">:</span> <span class="token string">"xxxxxxxxxxxxxxx"</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true">#你的</span>
+        <span class="token string">'proxyPass'</span><span class="token punctuation">:</span> <span class="token string">"xxxxxxxxxxxxxxx"</span><span class="token comment" spellcheck="true">#你的</span>
+    <span class="token punctuation">}</span>
+</code></pre>
+<p>添加中间件：</p>
+<pre class=" language-python"><code class="language-python">proxyAuth <span class="token operator">=</span> <span class="token string">"Basic "</span> <span class="token operator">+</span> base64<span class="token punctuation">.</span>urlsafe_b64encode<span class="token punctuation">(</span>bytes<span class="token punctuation">(</span><span class="token punctuation">(</span>proxyUser <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> proxyPass<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"ascii"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf8"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">ABProxyMiddleware</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">""" 阿布云ip代理配置 """</span>
+    <span class="token keyword">def</span> <span class="token function">process_request</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> request<span class="token punctuation">,</span> spider<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        request<span class="token punctuation">.</span>meta<span class="token punctuation">[</span><span class="token string">"proxy"</span><span class="token punctuation">]</span> <span class="token operator">=</span> proxyServer
+        request<span class="token punctuation">.</span>headers<span class="token punctuation">[</span><span class="token string">"Proxy-Authorization"</span><span class="token punctuation">]</span> <span class="token operator">=</span> proxyAuth
+</code></pre>
+<hr>
+<p>爬虫菜鸟，有问题请帮忙指出！</p>
+
+            </div>
+            <hr>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Susie Chang</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="www.ephemeron.top/2018/12/03/pa-qu-zhong-guo-zhi-wang-cnki-de-yu-dao-de-keng-yu-ji-zhu-zong-jie/">www.ephemeron.top/2018/12/03/pa-qu-zhong-guo-zhi-wang-cnki-de-yu-dao-de-keng-yu-ji-zhu-zong-jie/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Susie Chang</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Scrapy/">
+                                    <span class="chip bg-color">Scrapy</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/12/10/truffle-vue-web3-1.0-chuang-jian-yi-ge-yi-tai-fang-dapp/">
+                    <div class="card-image">
+                        
+                        <img src="/img/post-bg-ethereum.png" class="responsive-img" alt="Truffle+Vue+Web3 1.0创建一个以太坊Dapp">
+                        
+                        <span class="card-title">Truffle+Vue+Web3 1.0创建一个以太坊Dapp</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            参考资料
+使用 Web3 和 Vue.js 来创建你的第一个以太坊 dAPP
+web3 1.0 API
+
+开发环境
+Windows10
+web3 1.0
+
+编写第一个Solidity智能合约一个简单的例子是编写一个可以注册，保存社区成员信息
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-12-10
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/技术总结/" class="post-category">
+                                    技术总结
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/区块链/">
+                        <span class="chip bg-color">区块链</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/11/05/zhi-shi-tu-pu-cong-gou-jian-dao-cheng-xian/">
+                    <div class="card-image">
+                        
+                        <img src="/img/post-bg-kg.png" class="responsive-img" alt="知识图谱-从构建到呈现">
+                        
+                        <span class="card-title">知识图谱-从构建到呈现</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            参考资料
+Apache Jena
+ 基于 REfO 的 KBQA 实现及示例
+知识图谱-给AI装个大脑
+
+技术路线
+构建实体概念
+工具：Protégé
+
+
+构建三元组数据库TDB
+数据采集：爬虫基础(百度百科，去哪儿网，etc)
+Apach
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-11-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/技术总结/" class="post-category">
+                                    技术总结
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/知识图谱/">
+                        <span class="chip bg-color">知识图谱</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12" server="netease" type="playlist" id="503838841" fixed="true" autoplay="false" theme="#42b983" loop="all" order="random" preload="auto" volume="0.7" list-folded="true">
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Susie Chang</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv" class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv" class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/blinkfox" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1181062873@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1181062873" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1181062873" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

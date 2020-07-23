@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+	<meta charset="UTF-8">
+	<title>Canvas Universe</title>
+	<script type="application/javascript">
+
+	</script>
+	<style type="text/css">
+		html, body {
+			background-color: #252C41;
+			margin: 0;
+			padding: 0;
+		}
+		.canvas-container {
+			width: 500px;
+			height: 500px;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+		}
+	</style>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"><script>loadCSS("/css/prism-tomorrow.css");</script><noscript><link rel="stylesheet" href="/css/prism-tomorrow.css"></noscript></head>
+<body>
+	<div class="canvas-container">
+		<canvas id="canvas" width="500" height="500">
+			your broswer is not support canvas element
+		</canvas>
+	</div>
+	<script type="application/javascript">
+		var canvas = document.getElementById("canvas");
+		var time = 0;
+		const circleRadius = [245, 220, 195, 170, 145, 120, 95, 70];
+		const radius = 250;
+		function drawStaticContext(cxt) {
+			cxt.save();
+			cxt.strokeStyle="#6D819C"
+			cxt.lineWidth="1"
+			circleRadius.forEach( function(element, index) {
+				cxt.beginPath();
+				cxt.arc(radius, radius, element, 0, 2 * Math.PI, false);
+				cxt.closePath();
+				cxt.stroke();
+			});
+			cxt.fillStyle="#F9D423";
+			cxt.shadowColor="#FC913A";
+			cxt.shadowBlur = 45;
+			cxt.beginPath();
+			cxt.arc(radius, radius, 30, 0, 2 * Math.PI, false);
+			cxt.closePath();
+			cxt.fill();
+			cxt.restore();
+		}
+		if(canvas.getContext) {
+			var context = canvas.getContext("2d");
+			drawStaticContext(context);
+			setInterval(function () {
+				run(context);
+			}, 50);
+		}
+
+		function run(cxt) {
+			cxt.clearRect(0, 0, 500, 500);
+			cxt.save();
+			drawStaticContext(cxt);
+			cxt.translate(radius, radius);
+			cxt.fillStyle="#C89EC4";
+			circleRadius.forEach(function(element, index) {
+				var angle = time;
+				cxt.rotate(angle * (Math.PI/180));
+				cxt.beginPath();
+				cxt.arc(0, element, 5, 0, 2*Math.PI, false);
+				cxt.closePath();
+				cxt.fill();
+			});
+			time+=1;
+			cxt.restore();
+		}
+	</script>
+</body>
+</html>
